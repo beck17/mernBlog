@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     avatarUrl: String,
-    // тут указыкать вк
+    vkUrl: String,
 }, {
     timestamps: true,
 })
