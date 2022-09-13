@@ -40,7 +40,8 @@ export const getOne = async (req, res) => {
                 }
 
                 res.json(doc)
-            })
+            }
+        ).populate('user')
     } catch (e) {
         console.log(e)
         res.status(500).json({
@@ -54,7 +55,7 @@ export const create = async (req, res) => {
         const doc = new Post({
             title: req.body.title,
             text: req.body.text,
-            tags: req.body.tags,
+            tags: req.body.tags.split(" "),
             imageUrl: req.body.imageUrl,
             user: req.userId,
         })
@@ -103,25 +104,25 @@ export const remove = async (req, res) => {
     }
 }
 
-export const update = async (req,res) => {
-    try{
+export const update = async (req, res) => {
+    try {
         const postId = req.params.id
 
         await Post.updateOne({
-            _id: postId
-        },
-        {
-            title: req.body.title,
-            user: req.body.userId,
-            text: req.body.text,
-            tags: req.body.tags,
-            imageUrl: req.body.imageUrl,
-        })
+                _id: postId
+            },
+            {
+                title: req.body.title,
+                user: req.body.userId,
+                text: req.body.text,
+                tags: req.body.tags,
+                imageUrl: req.body.imageUrl,
+            })
 
         res.json({
             success: true
         })
-    }catch (e) {
+    } catch (e) {
         res.status(500).json({
             message: 'Не удалось обновить статью'
         })
@@ -129,11 +130,11 @@ export const update = async (req,res) => {
 }
 
 
-export const getLastTags = async (req,res) => {
+export const getLastTags = async (req, res) => {
     try {
         const posts = await Post.find().limit(5).exec()
 
-        const tags = posts.map(obj => obj.tags).flat().slice(0,5)
+        const tags = posts.map(obj => obj.tags).flat().slice(0, 5)
 
         res.json(tags)
     } catch (e) {

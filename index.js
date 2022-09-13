@@ -45,7 +45,6 @@ app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
 app.get('/tags', getLastTags)
 
 app.get('/posts', getAll)
-// app.get('/posts/tags', getLastTags)
 app.get('/posts/:id', getOne)
 app.post('/posts', checkAuth, postCreateValidation, handleErrors, create)
 app.delete('/posts/:id', checkAuth, remove)
