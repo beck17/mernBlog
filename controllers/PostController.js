@@ -1,4 +1,5 @@
 import Post from '../models/Post.js'
+import Comment from "../models/Comment.js";
 
 export const getAll = async (req, res) => {
     try {
@@ -55,7 +56,7 @@ export const create = async (req, res) => {
         const doc = new Post({
             title: req.body.title,
             text: req.body.text,
-            tags: req.body.tags.split(" "),
+            tags: req.body.tags.split(", "),
             imageUrl: req.body.imageUrl,
             user: req.userId,
         })
@@ -144,3 +145,4 @@ export const getLastTags = async (req, res) => {
         })
     }
 }
+
