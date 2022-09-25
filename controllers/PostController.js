@@ -1,9 +1,8 @@
 import Post from '../models/Post.js'
-import Comment from "../models/Comment.js";
 
 export const getAll = async (req, res) => {
     try {
-        const posts = await Post.find().populate('user').exec()
+        const posts = await Post.find().populate('user').sort({$natural:-1}).exec()
 
         res.json(posts)
     } catch (e) {
@@ -133,7 +132,7 @@ export const update = async (req, res) => {
 
 export const getLastTags = async (req, res) => {
     try {
-        const posts = await Post.find().limit(5).exec()
+        const posts = await Post.find().sort({$natural:-1}).limit(5).exec()
 
         const tags = posts.map(obj => obj.tags).flat().slice(0, 5)
 

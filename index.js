@@ -8,7 +8,7 @@ import checkAuth from './utils/checkAuth.js'
 import handleErrors from './utils/handleErrors.js'
 import {register, getMe, login} from "./controllers/UserController.js";
 import {create, getAll, getOne, remove, update, getLastTags} from "./controllers/PostController.js";
-import {createComment, getLastComments} from "./controllers/CommentsController.js";
+import {createComment, commentsOnPost, getLastComments} from "./controllers/CommentsController.js";
 
 
 mongoose
@@ -47,6 +47,7 @@ app.get('/tags', getLastTags)
 
 app.post('/comments/:id', checkAuth, createComment)
 app.get('/lastComments', getLastComments)
+app.get('/comments/:id', commentsOnPost)
 
 app.get('/posts', getAll)
 app.get('/posts/:id', getOne)

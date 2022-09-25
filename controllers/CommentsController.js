@@ -11,6 +11,7 @@ export const createComment = async (req,res) => {
         }
 
         const newComment = new Comment({
+            postId,
             comment,
             author: req.userId,
         })
@@ -39,17 +40,31 @@ export const createComment = async (req,res) => {
 
 export const getLastComments = async (req,res) => {
     try {
-        const comments = await Comment.find().populate('author').limit(5).exec()
-
+        const comments = await Comment.find().populate('author').sort({$natural:-1}).limit(5).exec()
         console.log(comments)
 
-        const lastComments = comments.map(obj => obj).flat().slice(0, 5)
+        const lastComments = comments.map(obj => obj).flat().slice(-5)
 
         res.json(lastComments)
     } catch (e) {
         console.log(e)
         res.status(500).json({
             message: 'Не удалось получить комментарии'
+        })
+    }
+}
+
+export const commentsOnPost = async (req,res) => {
+    try{
+        const postId = req.params.id
+
+        const comments = await Comment.find({postId: postId}).populate('author').exec()
+
+        res.json(comments)
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({
+            message: 'Не удалось получить комментарии к посту'
         })
     }
 }
