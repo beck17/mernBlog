@@ -13,6 +13,19 @@ export const getAll = async (req, res) => {
     }
 }
 
+export const getAllPopulate = async (req,res) => {
+    try{
+        const posts = await Post.find().populate('user').sort({viewsCount: -1}).exec()
+
+        res.json(posts)
+    }catch (e) {
+        console.log(e)
+        res.status(500).json({
+            message: 'Не удалось получить статьи'
+        })
+    }
+}
+
 export const getOne = async (req, res) => {
     try {
         const postId = req.params.id
@@ -128,7 +141,6 @@ export const update = async (req, res) => {
         })
     }
 }
-
 
 export const getLastTags = async (req, res) => {
     try {

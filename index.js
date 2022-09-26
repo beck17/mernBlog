@@ -7,7 +7,7 @@ import {registerValidation, loginValidation, postCreateValidation} from './valid
 import checkAuth from './utils/checkAuth.js'
 import handleErrors from './utils/handleErrors.js'
 import {register, getMe, login} from "./controllers/UserController.js";
-import {create, getAll, getOne, remove, update, getLastTags} from "./controllers/PostController.js";
+import {create, getAll, getOne, remove, update, getLastTags, getAllPopulate} from "./controllers/PostController.js";
 import {createComment, commentsOnPost, getLastComments} from "./controllers/CommentsController.js";
 
 
@@ -50,6 +50,7 @@ app.get('/lastComments', getLastComments)
 app.get('/comments/:id', commentsOnPost)
 
 app.get('/posts', getAll)
+app.get('/posts/populate', getAllPopulate)
 app.get('/posts/:id', getOne)
 app.post('/posts', checkAuth, postCreateValidation, handleErrors, create)
 app.delete('/posts/:id', checkAuth, remove)
