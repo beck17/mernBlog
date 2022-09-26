@@ -26,6 +26,21 @@ export const getAllPopulate = async (req,res) => {
     }
 }
 
+export const getPostsOnTag = async (req,res) => {
+    try{
+        const tag = req.params.tag
+
+        const posts = await Post.find({tags: tag}).populate('user').sort({$natural:-1}).exec()
+
+        res.json(posts)
+    }catch (e) {
+        console.log(e)
+        res.status(500).json({
+            message: 'Не удалось получить статьи'
+        })
+    }
+}
+
 export const getOne = async (req, res) => {
     try {
         const postId = req.params.id

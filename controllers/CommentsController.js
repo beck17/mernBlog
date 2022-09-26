@@ -41,7 +41,6 @@ export const createComment = async (req,res) => {
 export const getLastComments = async (req,res) => {
     try {
         const comments = await Comment.find().populate('author').sort({$natural:-1}).limit(5).exec()
-        console.log(comments)
 
         const lastComments = comments.map(obj => obj).flat().slice(-5)
 

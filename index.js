@@ -7,7 +7,16 @@ import {registerValidation, loginValidation, postCreateValidation} from './valid
 import checkAuth from './utils/checkAuth.js'
 import handleErrors from './utils/handleErrors.js'
 import {register, getMe, login} from "./controllers/UserController.js";
-import {create, getAll, getOne, remove, update, getLastTags, getAllPopulate} from "./controllers/PostController.js";
+import {
+    create,
+    getAll,
+    getOne,
+    remove,
+    update,
+    getLastTags,
+    getAllPopulate,
+    getPostsOnTag
+} from "./controllers/PostController.js";
 import {createComment, commentsOnPost, getLastComments} from "./controllers/CommentsController.js";
 
 
@@ -44,6 +53,7 @@ app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
 })
 
 app.get('/tags', getLastTags)
+app.get('/tags/:tag', getPostsOnTag)
 
 app.post('/comments/:id', checkAuth, createComment)
 app.get('/lastComments', getLastComments)
