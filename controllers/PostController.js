@@ -172,3 +172,75 @@ export const getLastTags = async (req, res) => {
     }
 }
 
+export const likePost = async (req, res) => {
+    try {
+        const postId = req.params.id
+
+        Post.findOneAndUpdate({
+                _id: postId
+            },
+            {
+                $inc: {likes: 1}
+            },
+            {
+                returnDocument: 'after'
+            },
+            (err, doc) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json({
+                        message: 'Не удалось поставить лайк'
+                    })
+                }
+                if (!doc) {
+                    return res.status(404).json({
+                        message: 'Статья не найдена'
+                    })
+                }
+                res.json(doc)
+            }
+        )
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({
+            message: 'Не удалось поставить лайк'
+        })
+    }
+}
+
+export const dislikePost = async (req, res) => {
+    try {
+        const postId = req.params.id
+
+        Post.findOneAndUpdate({
+                _id: postId
+            },
+            {
+                $inc: {likes: -1}
+            },
+            {
+                returnDocument: 'after'
+            },
+            (err, doc) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json({
+                        message: 'Не удалось поставить дизлайк'
+                    })
+                }
+                if (!doc) {
+                    return res.status(404).json({
+                        message: 'Статья не найдена'
+                    })
+                }
+
+                res.json(doc)
+            }
+        )
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({
+            message: 'Не удалось поставить дизлайк'
+        })
+    }
+}

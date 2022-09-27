@@ -11,7 +11,7 @@ const PostSchema = new mongoose.Schema({
     },
     tags: {
         type: Array,
-        default:[]
+        default: []
     },
     viewsCount: {
         type: Number,
@@ -20,13 +20,17 @@ const PostSchema = new mongoose.Schema({
     imageUrl: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref: 'User',
         required: true,
     },
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],
+    likes: {
+        type: Number,
+        default: 0,
+    }
 }, {
     timestamps: true,
 })

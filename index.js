@@ -15,7 +15,7 @@ import {
     update,
     getLastTags,
     getAllPopulate,
-    getPostsOnTag
+    getPostsOnTag, likePost, dislikePost
 } from "./controllers/PostController.js";
 import {createComment, commentsOnPost, getLastComments} from "./controllers/CommentsController.js";
 
@@ -65,6 +65,10 @@ app.get('/posts/:id', getOne)
 app.post('/posts', checkAuth, postCreateValidation, handleErrors, create)
 app.delete('/posts/:id', checkAuth, remove)
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleErrors, update)
+
+app.post('/like/:id',checkAuth, likePost)
+app.post('/dislike/:id',checkAuth, dislikePost)
+
 
 
 app.listen(4444, (err) => {
