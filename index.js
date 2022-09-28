@@ -15,9 +15,10 @@ import {
     update,
     getLastTags,
     getAllPopulate,
-    getPostsOnTag, likePost, dislikePost
+    getPostsOnTag,
 } from "./controllers/PostController.js";
 import {createComment, commentsOnPost, getLastComments} from "./controllers/CommentsController.js";
+import {likePost, dislikePost, getLikesOnPost} from "./controllers/LikeController.js";
 
 
 mongoose
@@ -68,6 +69,7 @@ app.patch('/posts/:id', checkAuth, postCreateValidation, handleErrors, update)
 
 app.post('/like/:id',checkAuth, likePost)
 app.post('/dislike/:id',checkAuth, dislikePost)
+app.get('/likes/:id', getLikesOnPost)
 
 
 

@@ -2,7 +2,7 @@ import Post from '../models/Post.js'
 
 export const getAll = async (req, res) => {
     try {
-        const posts = await Post.find().populate('user').sort({$natural:-1}).exec()
+        const posts = await Post.find().populate('user').sort({$natural: -1}).exec()
 
         res.json(posts)
     } catch (e) {
@@ -13,12 +13,12 @@ export const getAll = async (req, res) => {
     }
 }
 
-export const getAllPopulate = async (req,res) => {
-    try{
+export const getAllPopulate = async (req, res) => {
+    try {
         const posts = await Post.find().populate('user').sort({viewsCount: -1}).exec()
 
         res.json(posts)
-    }catch (e) {
+    } catch (e) {
         console.log(e)
         res.status(500).json({
             message: 'Не удалось получить статьи'
@@ -26,14 +26,14 @@ export const getAllPopulate = async (req,res) => {
     }
 }
 
-export const getPostsOnTag = async (req,res) => {
-    try{
+export const getPostsOnTag = async (req, res) => {
+    try {
         const tag = req.params.tag
 
-        const posts = await Post.find({tags: tag}).populate('user').sort({$natural:-1}).exec()
+        const posts = await Post.find({tags: tag}).populate('user').sort({$natural: -1}).exec()
 
         res.json(posts)
-    }catch (e) {
+    } catch (e) {
         console.log(e)
         res.status(500).json({
             message: 'Не удалось получить статьи'
@@ -159,7 +159,7 @@ export const update = async (req, res) => {
 
 export const getLastTags = async (req, res) => {
     try {
-        const posts = await Post.find().sort({$natural:-1}).limit(5).exec()
+        const posts = await Post.find().sort({$natural: -1}).limit(5).exec()
 
         const tags = posts.map(obj => obj.tags).flat().slice(0, 5)
 
@@ -172,75 +172,3 @@ export const getLastTags = async (req, res) => {
     }
 }
 
-export const likePost = async (req, res) => {
-    try {
-        const postId = req.params.id
-
-        Post.findOneAndUpdate({
-                _id: postId
-            },
-            {
-                $inc: {likes: 1}
-            },
-            {
-                returnDocument: 'after'
-            },
-            (err, doc) => {
-                if (err) {
-                    console.log(err)
-                    return res.status(500).json({
-                        message: 'Не удалось поставить лайк'
-                    })
-                }
-                if (!doc) {
-                    return res.status(404).json({
-                        message: 'Статья не найдена'
-                    })
-                }
-                res.json(doc)
-            }
-        )
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({
-            message: 'Не удалось поставить лайк'
-        })
-    }
-}
-
-export const dislikePost = async (req, res) => {
-    try {
-        const postId = req.params.id
-
-        Post.findOneAndUpdate({
-                _id: postId
-            },
-            {
-                $inc: {likes: -1}
-            },
-            {
-                returnDocument: 'after'
-            },
-            (err, doc) => {
-                if (err) {
-                    console.log(err)
-                    return res.status(500).json({
-                        message: 'Не удалось поставить дизлайк'
-                    })
-                }
-                if (!doc) {
-                    return res.status(404).json({
-                        message: 'Статья не найдена'
-                    })
-                }
-
-                res.json(doc)
-            }
-        )
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({
-            message: 'Не удалось поставить дизлайк'
-        })
-    }
-}
