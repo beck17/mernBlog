@@ -15,7 +15,7 @@ export const getAll = async (req, res) => {
 
 export const getAllPopulate = async (req, res) => {
     try {
-        const posts = await Post.find().populate('user').sort({viewsCount: -1}).exec()
+        const posts = await Post.find().populate('user').sort({viewsCount: 1}).exec()
 
         res.json(posts)
     } catch (e) {

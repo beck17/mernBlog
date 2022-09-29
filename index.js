@@ -6,7 +6,7 @@ import cors from 'cors'
 import {registerValidation, loginValidation, postCreateValidation} from './validations/validation.js'
 import checkAuth from './utils/checkAuth.js'
 import handleErrors from './utils/handleErrors.js'
-import {register, getMe, login} from "./controllers/UserController.js";
+import {getMe, login, registerUser, registerPublish} from "./controllers/UserController.js";
 import {
     create,
     getAll,
@@ -44,7 +44,8 @@ app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
 app.post('/auth/login', loginValidation, handleErrors, login)
-app.post('/auth/register', registerValidation, handleErrors, register)
+app.post('/auth/registerUser', registerValidation, handleErrors, registerUser)
+app.post('/auth/registerPublish', registerValidation, handleErrors, registerPublish)
 app.get('/auth/me', checkAuth, getMe)
 
 app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
@@ -67,10 +68,9 @@ app.post('/posts', checkAuth, postCreateValidation, handleErrors, create)
 app.delete('/posts/:id', checkAuth, remove)
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleErrors, update)
 
-app.post('/like/:id',checkAuth, likePost)
-app.post('/dislike/:id',checkAuth, dislikePost)
+app.post('/like/:id', checkAuth, likePost)
+app.post('/dislike/:id', checkAuth, dislikePost)
 app.get('/likes/:id', getLikesOnPost)
-
 
 
 app.listen(4444, (err) => {

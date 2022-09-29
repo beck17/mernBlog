@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema({
     },
     avatarUrl: String,
     vkUrl: String,
+    role: {
+        type: String,
+        ref: 'Role'
+    }
 }, {
     timestamps: true,
 })
