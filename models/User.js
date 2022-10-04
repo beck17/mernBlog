@@ -19,7 +19,11 @@ const UserSchema = new mongoose.Schema({
     role: {
         type: String,
         ref: 'Role'
-    }
+    },
+    likedPost: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Like',
+    }]
 }, {
     timestamps: true,
 })
