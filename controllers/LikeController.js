@@ -49,7 +49,6 @@ export const likePost = async (req, res) => {
             res.json(allLikes)
         } else {
 
-
             const like = await Like.findOne({
                 postId,
                 author: userId
@@ -123,6 +122,21 @@ export const getLikesOnPost = async (req, res) => {
         console.log(e)
         res.json({
             message: "Не удалось получить лайки на пост"
+        })
+    }
+}
+
+export const getLikedPostUser = async (req,res) => {
+    try {
+        const userId = req.userId
+
+        const likedPosts = await Like.find({author: userId}).populate('postId').exec()
+
+        res.json(likedPosts)
+    } catch (e) {
+        console.log(e)
+        res.json({
+            message: "Не удалось получить лайкнутые посты"
         })
     }
 }

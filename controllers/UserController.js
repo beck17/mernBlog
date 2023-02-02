@@ -128,3 +128,18 @@ export const getMe = async (req, res) => {
         })
     }
 }
+
+export const getUser = async (req, res) => {
+    try{
+        const {id} = req.params
+
+        const user = await User.findById(id).populate('likedPost').exec()
+
+        console.log(user);
+
+        res.json(user)
+    }catch (e) {
+        res.json(e)
+        console.log(e)
+    }
+}
