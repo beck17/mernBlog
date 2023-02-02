@@ -2,9 +2,7 @@ import express from 'express'
 import mongoose from "mongoose";
 import multer from 'multer'
 import cors from 'cors'
-import pdf from 'html-pdf'
-import excelJs from 'exceljs'
-import fs from 'fs'
+import dotenv from 'dotenv'
 
 import {registerValidation, loginValidation, postCreateValidation} from './validations/validation.js'
 import checkAuth from './utils/checkAuth.js'
@@ -22,9 +20,6 @@ import {
 } from "./controllers/PostController.js";
 import {createComment, commentsOnPost, getLastComments} from "./controllers/CommentsController.js";
 import {likePost, getLikesOnPost, getLikedPostUser} from "./controllers/LikeController.js";
-import {fileURLToPath} from "url";
-import {dirname} from "path";
-import pdfTemplate from './doc/index.js'
 
 mongoose
     .connect('mongodb+srv://beck17:wwwwww@cluster0.qygay.mongodb.net/blog?retryWrites=true&w=majority',)
@@ -32,6 +27,8 @@ mongoose
     .catch(e => console.log('DB ERROR' + e))
 
 const app = express()
+dotenv.config()
+const PORT = process.env.PORT || 4444
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
@@ -80,56 +77,9 @@ app.get('/likes/:id', getLikesOnPost)
 app.get('/liked', checkAuth, getLikedPostUser)
 
 
-app.post('/create-pdf', (req, res) => {
-    pdf.create(pdfTemplate(req.body), {}).toFile('result.pdf', (err) => {
-        if (err) {
-            res.send(Promise.reject());
-        }
-
-        res.send(Promise.resolve());
-    });
-});
-
-app.get('/fetch-pdf', (req, res) => {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    res.sendFile(`${__dirname}/result.pdf`)
-})
-
-app.post('/create-exel', async (req, res) => {
-    try {
-        const {fullName, email, vkUrl} = req.body
-        console.log(req.body);
-        let workbook = new excelJs.Workbook()
-
-        const sheet = workbook.addWorksheet('user')
-        sheet.columns = [
-            {header: 'Name', key: 'name', width: 25},
-            {header: 'Email', key: 'email', width: 25},
-            // {header: 'Кол-во лайков', key: 'likes', width: 25},
-            {header: 'Vk', key: 'vk', width: 25},
-            // {header: 'Date', key: 'date', width: 25}
-        ]
-
-        sheet.addRow({
-            name: fullName,
-            email: email,
-            vk: vkUrl,
-            // date: createdAt.date,
-            // likes: likedPost.length
-        })
-
-        res.setHeader("Content-Type","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-        res.setHeader("Content-Disposition","attachment;filename" + "=user.xlsx")
-
-        await workbook.xlsx.write(res)
-    } catch (e) {
-        console.log(e);
-    }
-})
 
 
-app.listen(4444, (err) => {
+app.listen(PORT, (err) => {
     if (err) {
         return console.log(err)
     }
