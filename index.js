@@ -21,10 +21,6 @@ import {
 import {createComment, commentsOnPost, getLastComments} from "./controllers/CommentsController.js";
 import {likePost, getLikesOnPost, getLikedPostUser} from "./controllers/LikeController.js";
 
-mongoose
-    .connect('mongodb+srv://beck17:wwwwww@cluster0.qygay.mongodb.net/blog?retryWrites=true&w=majority',)
-    .then(() => console.log('DB OK'))
-    .catch(e => console.log('DB ERROR' + e))
 
 const app = express()
 dotenv.config()
@@ -77,12 +73,19 @@ app.get('/likes/:id', getLikesOnPost)
 app.get('/liked', checkAuth, getLikedPostUser)
 
 
+const start = async () => {
+    try {
+        await mongoose
+            .connect('mongodb+srv://beck17:wwwwww@cluster0.qygay.mongodb.net/blog?retryWrites=true&w=majority',)
+            .then(() => console.log('DB OK'))
+            .catch(e => console.log('DB ERROR' + e))
 
-
-app.listen(PORT, (err) => {
-    if (err) {
-        return console.log(err)
+        await app.listen(PORT, () => {
+            console.log(`Server started on port: ${PORT}`)
+        })
+    } catch (e) {
+        console.log(e);
     }
+}
 
-    console.log("Server OK")
-})
+start()
