@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import multer from 'multer'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import fs from "fs";
 
 import {registerValidation, loginValidation, postCreateValidation} from './validations/validation.js'
 import checkAuth from './utils/checkAuth.js'
@@ -28,6 +29,9 @@ const PORT = process.env.PORT || 4444
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
+        if(!fs.existsSync('uploads')){
+            fs.mkdirSync('uploads')
+        }
         cb(null, 'uploads')
     },
     filename: (_, file, cb) => {

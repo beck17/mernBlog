@@ -6,6 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "",
     "start": "node index.js",
     "start:dev": "nodemon index.js"
   },
